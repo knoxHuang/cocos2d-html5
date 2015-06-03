@@ -642,7 +642,7 @@ cc.loader = /** @lends cc.loader# */{
             if (cc._loadingImage)
                 jsLoadingImg.src = cc._loadingImage;
 
-            var canvasNode = d.getElementById(cc.game.config["id"]);
+            var canvasNode = cc.game.canvas;//d.getElementById(cc.game.config["id"]);
             canvasNode.style.backgroundColor = "black";
             canvasNode.parentNode.appendChild(jsLoadingImg);
 
@@ -1910,7 +1910,7 @@ cc._setup = function (el, width, height) {
     if (cc._setupCalled) return;
     else cc._setupCalled = true;
     var win = window;
-    var element = cc.$(el) || cc.$('#' + el);
+    var element = cc.game.canvas; //cc.$(el) || cc.$('#' + el);
     var localCanvas, localContainer, localConStyle;
 
     cc.game._setAnimFrame();
@@ -1923,7 +1923,7 @@ cc._setup = function (el, width, height) {
         localContainer = cc.container = cc.newElement("DIV");
         localCanvas = cc._canvas = element;
         localCanvas.parentNode.insertBefore(localContainer, localCanvas);
-        localCanvas.appendTo(localContainer);
+        localContainer.appendChild(localCanvas);
         localContainer.setAttribute('id', 'Cocos2dGameContainer');
     } else {//we must make a new canvas and place into this element
         if (element.tagName !== "DIV") {
@@ -1935,6 +1935,17 @@ cc._setup = function (el, width, height) {
         localCanvas = cc._canvas = cc.$(cc.newElement("CANVAS"));
         element.appendChild(localCanvas);
     }
+
+    localCanvas.addClass = function (cls) {
+        var hasClass = this.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+        if ( !hasClass ) {
+            if (this.className) {
+                this.className += " ";
+            }
+            this.className += cls;
+        }
+        return this;
+    };
 
     localCanvas.addClass("gameCanvas");
     localCanvas.setAttribute("width", width || 480);
@@ -2188,14 +2199,14 @@ cc.game = /** @lends cc.game# */{
             if (id) {
                 self.config[self.CONFIG_KEY.id] = id;
             }
-            if (!self._prepareCalled) {
-                self.prepare(function () {
-                    self._prepared = true;
-                });
-            }
+            //if (!self._prepareCalled) {
+            //    self.prepare(function () {
+            //        self._prepared = true;
+            //    });
+            //}
             if (cc._supportRender) {
-                self._checkPrepare = setInterval(function () {
-                    if (self._prepared) {
+                //self._checkPrepare = setInterval(function () {
+                //    if (self._prepared) {
                         cc._setup(self.config[self.CONFIG_KEY.id]);
                         self._runMainLoop();
                         self._eventHide = self._eventHide || new cc.EventCustom(self.EVENT_HIDE);
@@ -2203,9 +2214,9 @@ cc.game = /** @lends cc.game# */{
                         self._eventShow = self._eventShow || new cc.EventCustom(self.EVENT_SHOW);
                         self._eventShow.setUserData(self);
                         self.onStart();
-                        clearInterval(self._checkPrepare);
-                    }
-                }, 10);
+                //        clearInterval(self._checkPrepare);
+                //    }
+                //}, 10);
             }
         };
         document.body ?
