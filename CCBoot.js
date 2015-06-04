@@ -2235,7 +2235,7 @@ cc.game = /** @lends cc.game# */{
                 cfg[CONFIG_KEY.debugMode] = 0;
             cfg[CONFIG_KEY.frameRate] = cfg[CONFIG_KEY.frameRate] || 60;
             if(cfg[CONFIG_KEY.renderMode] == null)
-                cfg[CONFIG_KEY.renderMode] = 1;
+                cfg[CONFIG_KEY.renderMode] = 2;
             return cfg;
         };
         if (document["ccConfig"]) {

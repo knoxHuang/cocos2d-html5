@@ -421,6 +421,8 @@ cc._tmp.WebGLTexture2D = function () {
                 return;
             this._webTextureObj = cc._renderContext.createTexture();
             this._htmlElementObj = element;
+            this._contentSize.width = element.width;
+            this._contentSize.height = element.height;
             this._textureLoaded = true;
         },
 
